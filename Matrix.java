@@ -1,0 +1,117 @@
+/*  
+    REMEMBER!!!
+    EACH POINT IS A COLUMN, NOT A ROW!
+    CHANGE THINGS ACCORDINGLY SHOULD MORE THINGS BE IMPLEMENTED
+*/
+
+public class Matrix {
+
+    private double[][] matrix;
+    private int point_number;
+
+    public Matrix(int rows, int cols){
+        matrix = new double[rows][cols];
+    }
+
+    public void ident(){
+        if (matrix.length != matrix[0].length){
+            System.out.println("This ain't a square matrix!");
+            return;
+        }
+        for (int i = 0; i < matrix.length; i ++){
+            for (int j = 0; j < matrix[0].length; j ++){
+                if (i == j){
+                    matrix[i][j] = 1.0;
+                }
+                else {
+                    matrix[i][j] = 0.0;
+                }
+            }
+        }
+        point_number = matrix.length;
+    }
+
+    public void addPoint(double[] point){
+        if (point.length != matrix.length){
+            System.out.println("Point isn't the same size as the matrix.");
+            return;
+        }
+        if (point_number >= matrix[0].length){
+            resize();
+        }
+        for (int i = 0; i < point.length; i ++){
+            matrix[i][point_number] = point[i];
+        }
+        point_number ++;
+    }
+
+    public void addEdge(double[] point0, double[] point1){
+        addPoint(point0);
+        addPoint(point1);
+    }
+
+    private void resize(){
+        int new_size = point_number + 10;
+        double[][] temp = new double[matrix.length][new_size];
+        for (int i = 0; i < matrix.length; i ++){
+            for (int j = 0; j < matrix[0].length; j ++){
+                temp[i][j] = matrix[i][j];
+            }
+        }
+        matrix = temp;
+    }
+
+    public double getNum(int row, int col){
+        return matrix[row][col];
+    }
+
+    public int[] getPoint(int col){
+        int[] temp = new int[matrix.length];
+        for (int i = 0; i < matrix.length; i ++){
+            temp[i] = (int)matrix[i][col];
+        }
+        return temp;
+    }
+
+    public int getRows(){
+        return matrix.length;
+    }
+
+    public int getCols(){
+        return point_number;
+    }
+
+    public String toString(){
+        String temp = new String();
+        for (int i = 0; i < matrix.length; i ++){
+            for (int j = 0; j < point_number; j ++){
+                String tempp = String.valueOf(matrix[i][j]);
+                temp += tempp + " ";
+            }
+            temp += "\n";
+        }
+        return temp;
+    }
+
+    public static Matrix multi(Matrix m0, Matrix m1){
+        Matrix temp = new Matrix(m0.getRows(), m1.getCols());
+        int n = m0.getCols();
+        //System.out.println("Multiplying\n" + m0 + " with\n" + m1);
+        for (int i = 0; i < m1.getCols(); i ++){
+            double[] nums = new double[m0.getRows()];
+            for (int j = 0; j < m0.getRows(); j ++){
+                double sum = 0;
+                for (int k = 0; k < n; k ++){
+                    //System.out.println(i + " " + j + " " + k);
+                    sum += m0.getNum(j, k) * m1.getNum(k, i);
+                }
+                nums[j] = sum;
+                //System.out.println(sum);
+            }
+            temp.addPoint(nums);
+            //System.out.println("Stage " + i + "\n" + temp + "\n");
+        }
+        return temp;
+    }
+
+}
