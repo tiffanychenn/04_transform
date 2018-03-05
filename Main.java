@@ -6,7 +6,7 @@ public class Main {
         Image i = new Image(new int[] {255, 255, 255});
         Matrix edge = new Matrix(4, 4);
         Matrix trans = new Matrix(4, 4);
-        ArrayList<String> commands = Parser.parse();
+        ArrayList<String> commands = Parser.parse("script");
         Parser.execute(edge, trans, commands, i);
     }
 

@@ -4,9 +4,9 @@ import java.lang.*;
 
 public class Parser {
 
-    public static ArrayList<String> parse(){
+    public static ArrayList<String> parse(String filename){
         try {
-            File f = new File("script");
+            File f = new File(filename);
             Scanner sc = new Scanner(f);
             ArrayList<String> stuff = new ArrayList<String>();
             while (sc.hasNext()){
@@ -79,8 +79,6 @@ public class Parser {
                 //System.out.println(trans);
             }
             else if (c.equals("apply")){
-            	System.out.println(edge);
-            	System.out.println(trans);
                 edge = Matrix.multi(trans, edge);
                 //System.out.println(edge);
             }
@@ -101,7 +99,24 @@ public class Parser {
                     System.out.println(e);
                 }
             }
-            //else if (c.equals(""))
+            else if (c.equals("save")){
+            	n ++;
+            	i = new Image();
+                Random rand = new Random();
+                int r = rand.nextInt(255);
+                int g = rand.nextInt(255);
+                int b = rand.nextInt(255);
+                Drawing.drawlines(edge, i, new int[] {r,g,b});
+                i.draw();
+                Runtime run = Runtime.getRuntime();
+                try {
+                    run.exec("convert image.ppm " + commands.get(n));
+                    Thread.sleep(1000);
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                }
+            }
             n ++;
         }
     }
