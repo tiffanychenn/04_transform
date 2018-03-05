@@ -117,6 +117,9 @@ public class Parser {
                     System.out.println(e);
                 }
             }
+            else if (c.equals("quit")){
+            	return;
+            }
             n ++;
         }
     }
